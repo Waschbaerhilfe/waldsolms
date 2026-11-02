@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Waschbärmanagement Waldsolms</title>
+<meta name="description" content="Fangauswertung, Fotos und Tipps zum Waschbärmanagement in Waldsolms.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: dunkles Fichtenband als Kopf, danach ein Arbeitsbereich mit Filtern, Karte und Zeitachse; Ratgeber unten. */
+:root{
+  --bg:#eef2e6; --surface:#ffffff; --ink:#1b281d; --muted:#5a6857; --line:#d3dbc6;
+  --moss:#7f9a35; --amber:#dca124; --band:#1f3a28; --band-ink:#eef3e4; --band-muted:#b9c9ae;
+  --rude:#2f6b4f; --fahe:#c4851a; --jung:#93ad3f; --fox:#b5532c;
+  --chip:#e3e9d6; --chip-on:#1f3a28; --chip-on-ink:#f2f6ea;
+  --display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111813; --surface:#19231b; --ink:#e4ebdc; --muted:#9dac98; --line:#2c3a2e;
+  --moss:#a6c25a; --amber:#e9b443; --band:#0c140e; --band-ink:#e9f0e0; --band-muted:#9fb294;
+  --rude:#62b38a; --fahe:#e8b54a; --jung:#bcd46a; --fox:#e07a52;
+  --chip:#223024; --chip-on:#a6c25a; --chip-on-ink:#10180f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111813; --surface:#19231b; --ink:#e4ebdc; --muted:#9dac98; --line:#2c3a2e;
+  --moss:#a6c25a; --amber:#e9b443; --band:#0c140e; --band-ink:#e9f0e0; --band-muted:#9fb294;
+  --rude:#62b38a; --fahe:#e8b54a; --jung:#bcd46a; --fox:#e07a52;
+  --chip:#223024; --chip-on:#a6c25a; --chip-on-ink:#10180f; color-scheme:dark}
+
+*{box-sizing:border-box}
+img{max-width:100%}[hidden]{display:none!important}
+.live{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--band-muted);margin-top:12px}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--band-muted)}
+.live.ok i{background:#7fd36a;box-shadow:0 0 0 3px rgba(127,211,106,.25)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.02}
+h2{font-size:clamp(28px,4vw,40px);font-weight:700;text-transform:uppercase;letter-spacing:.01em}
+h3{font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+
+/* Kopf */
+.hero{background:var(--band);color:var(--band-ink)}
+.hero .wrap{padding-block:56px 40px;display:grid;grid-template-columns:1.35fr 1fr;gap:40px;align-items:end}
+.hero h1{font-size:clamp(46px,8.5vw,104px);font-weight:800;text-transform:uppercase;letter-spacing:-.005em}
+.hero h1 span{display:block;color:var(--amber)}
+.hero .lead{max-width:56ch;margin-top:20px;color:var(--band-muted);font-size:18px}
+.hero .eyebrow{color:var(--band-muted);margin-bottom:14px}
+.tally{border-left:2px solid var(--amber);padding-left:24px;display:grid;gap:4px;min-width:0}
+.tally .big{font-family:var(--display);font-weight:800;font-size:clamp(88px,14vw,160px);line-height:.85;color:var(--amber)}
+.tally .cap{font-family:var(--display);font-size:24px;font-weight:600;text-transform:uppercase}
+.tally .sub{color:var(--band-muted);font-size:15px}
+.marks{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.marks i{display:block;width:4px;height:22px;background:var(--band-muted);opacity:.55;border-radius:1px}
+.marks i:nth-child(5n){transform:rotate(-55deg) translateY(-2px);margin-left:-12px;margin-right:6px;width:3px;opacity:.9;background:var(--amber)}
+nav.jump{border-top:1px solid color-mix(in srgb,var(--band-ink) 14%,transparent)}
+nav.jump .wrap{display:flex;gap:22px;flex-wrap:wrap;padding-block:14px}
+nav.jump a{color:var(--band-ink);text-decoration:none;font-family:var(--display);font-weight:600;font-size:17px;text-transform:uppercase;letter-spacing:.06em;opacity:.8}
+nav.jump a:hover{opacity:1;color:var(--amber)}
+
+section{padding-block:56px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.sec-head p{color:var(--muted);max-width:60ch}
+
+/* Filter */
+.filters{display:grid;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 18px;margin-bottom:20px}
+.frow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.frow .lab{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);width:84px;flex:none}
+.chip{border:0;background:var(--chip);padding:6px 12px;border-radius:999px;font-size:14px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.chip .c{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--chip-on);color:var(--chip-on-ink)}
+.chip[aria-pressed="true"] .c{color:inherit;opacity:.75}
+.chip .dot{width:9px;height:9px;border-radius:50%}
+.fstate{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:14px;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px}
+.reset{border:1px solid var(--line);background:transparent;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:13px}
+.reset:disabled{opacity:.4;cursor:default}
+
+/* Kennzahlen */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-bottom:20px}
+.kpi{background:var(--surface);padding:18px 20px;display:grid;gap:2px;min-width:0}
+.kpi b{font-family:var(--display);font-size:46px;font-weight:700;line-height:1}
+.kpi span{font-size:14px;color:var(--muted)}
+
+.grid2{display:grid;grid-template-columns:1.1fr 1fr;gap:20px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px;min-width:0;display:grid;gap:14px;align-content:start}
+.panel .ph{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.panel .note{font-size:13px;color:var(--muted)}
+svg text{font-family:var(--body)}
+.mapsvg{width:100%;height:auto;display:block}
+.place{cursor:pointer}
+.place:hover circle.halo{opacity:.35}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+.bars{display:grid;gap:10px}
+.bar{display:grid;grid-template-columns:110px 1fr 34px;gap:10px;align-items:center;font-size:15px;cursor:pointer;border:0;background:none;padding:0;text-align:left}
+.bar .track{height:14px;background:var(--chip);border-radius:2px;overflow:hidden}
+.bar .fill{height:100%;background:var(--moss);transition:width .4s ease}
+.bar[aria-pressed="true"] .fill{background:var(--amber)}
+.bar .v{font-family:var(--mono);font-size:13px;text-align:right}
+
+/* Fangliste */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;cursor:pointer;user-select:none}
+th[aria-sort="ascending"]::after{content:" ▲"}th[aria-sort="descending"]::after{content:" ▼"}
+td.kg{font-family:var(--mono);text-align:right}th.kg{text-align:right}
+tr:last-child td{border-bottom:0}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:14px}
+.tag i{width:8px;height:8px;border-radius:50%}
+.fox{font-size:12px;font-family:var(--mono);color:var(--fox);border:1px solid currentColor;border-radius:3px;padding:0 5px;margin-left:6px}
+.privacy{font-size:13px;color:var(--muted);margin-top:10px}
+
+/* Ratgeber */
+.guide{background:var(--surface);border-block:1px solid var(--line)}
+.tips{display:grid;grid-template-columns:repeat(2,1fr);gap:28px 40px}
+.tip{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:start}
+.tip svg{width:52px;height:52px}
+.tip p{color:var(--muted);margin-top:6px}
+
+.check{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.signs{display:grid;gap:8px}
+.sign{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:6px;cursor:pointer;background:var(--surface)}
+.sign input{width:20px;height:20px;accent-color:var(--band);margin:2px 0 0;flex:none}
+.sign:has(input:checked){border-color:var(--moss);background:color-mix(in srgb,var(--moss) 10%,var(--surface))}
+.verdict{border-radius:6px;padding:22px;background:var(--band);color:var(--band-ink);display:grid;gap:10px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px)}
+.meter{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.meter i{height:8px;border-radius:2px;background:color-mix(in srgb,var(--band-ink) 18%,transparent)}
+.meter i.on{background:var(--amber)}
+.verdict h3{font-size:28px}
+.verdict p{color:var(--band-muted)}
+
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.fact{border-top:2px solid var(--ink);padding-top:12px;display:grid;gap:6px}
+.fact b{font-family:var(--display);font-size:36px;font-weight:700;line-height:1}
+.fact p{color:var(--muted);font-size:15px}
+
+/* Galerie */
+.ig{color:var(--ink);font-weight:600;text-decoration-color:var(--amber);text-decoration-thickness:2px;text-underline-offset:3px}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:170px;gap:10px;grid-template-areas:"a a b c" "a a d e" "f f d e"}
+.g-a{grid-area:a}.g-b{grid-area:b}.g-c{grid-area:c}.g-d{grid-area:d}.g-e{grid-area:e}.g-f{grid-area:f}
+.gallery figure{margin:0;position:relative;overflow:hidden;border-radius:6px;background:var(--band);min-width:0}
+.gallery button{all:unset;display:block;width:100%;height:100%;cursor:zoom-in}
+.gallery button:focus-visible{outline:3px solid var(--amber);outline-offset:-3px}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+.gallery figure:hover img{transform:scale(1.04)}
+.g-f img{object-position:center 60%}.g-b img{object-position:center 75%}
+.gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:28px 12px 10px;font-size:13px;line-height:1.35;color:#f2f6ea;background:linear-gradient(transparent,rgba(10,18,12,.85));pointer-events:none}
+dialog#lightbox{border:0;padding:0;background:transparent;max-width:min(92vw,900px);color:#eef3e4}
+dialog#lightbox::backdrop{background:rgba(8,14,10,.88)}
+#lbImg{display:block;max-width:100%;max-height:78vh;margin:0 auto;border-radius:6px}
+#lbCap{text-align:center;margin-top:12px;font-size:15px}
+.lb-nav{display:flex;justify-content:center;gap:10px;margin-top:12px}
+.lb-nav button{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#eef3e4;border-radius:4px;padding:6px 14px;cursor:pointer;font-size:15px}
+@media (max-width:860px){
+  .gallery{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px;grid-template-areas:"a a" "a a" "b c" "d e" "d e" "f f"}
+}
+
+footer{background:var(--band);color:var(--band-muted);font-size:14px}
+footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:860px){
+  .hero .wrap{grid-template-columns:1fr;gap:28px}
+  .grid2,.check{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .tips{grid-template-columns:1fr}
+  .facts{grid-template-columns:1fr}
+  .verdict{position:static}
+}
+@media (max-width:480px){
+  .frow .lab{width:100%}
+  .bar{grid-template-columns:92px 1fr 30px}
+  .kpi b{font-size:38px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Gemeinde Waldsolms · Lahn-Dill-Kreis</p>
+      <h1>Waschbär&shy;management <span>Waldsolms</span></h1>
+      <p class="lead">Wo Waschbären Schäden anrichten, wird gefangen und dokumentiert. Hier sehen Sie, was in unseren Ortsteilen erlegt wurde, und was Sie selbst tun können, damit sich die Tiere gar nicht erst einnisten.</p>
+    </div>
+    <div class="tally">
+      <div class="big num" id="heroCount">26</div>
+      <div class="cap" id="heroCap">Fänge in 2026</div>
+      <div class="sub" id="heroSub">Letzter Eintrag: 27.10.2026</div>
+      <div class="marks" id="marks" aria-hidden="true"></div>
+      <div class="live" id="live"><i></i><span>Lade aktuelle Daten …</span></div>
+    </div>
+  </div>
+  <nav class="jump" aria-label="Seitenbereiche">
+    <div class="wrap">
+      <a href="#auswertung">Auswertung</a>
+      <a href="#fangliste">Fangliste</a>
+      <a href="#praxis">Praxis</a>
+      <a href="#vorbeugen">Vorbeugen</a>
+      <a href="#check">Dachstuhl-Check</a>
+      <a href="#steckbrief">Steckbrief</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+<section id="auswertung">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow" id="evalEyebrow">Auswertung 2026</p><h2>Wo, wann und warum</h2></div>
+      <p>Alle Ansichten hängen zusammen. Klicken Sie auf einen Ortsteil, einen Monat oder einen Grund, um die übrigen Zahlen danach zu filtern.</p>
+    </div>
+
+    <div class="filters" role="group" aria-label="Filter">
+      <div class="frow" id="rowJahr"><span class="lab">Jahr</span><div class="frow" id="fJahr"></div></div>
+      <div class="frow"><span class="lab">Tierart</span><div class="frow" id="fTier"></div></div>
+      <div class="frow"><span class="lab">Gruppe</span><div class="frow" id="fArt"></div></div>
+      <div class="fstate"><span id="fText">Alle 26 Einträge</span><button class="reset" id="reset" disabled>Filter zurücksetzen</button></div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><b class="num" id="kTotal">–</b><span>Fänge</span></div>
+      <div class="kpi"><b class="num" id="kJung">–</b><span>davon Jungtiere</span></div>
+      <div class="kpi"><b class="num" id="kHot">–</b><span id="kHotL">Ortsteil mit den meisten Fängen</span></div>
+      <div class="kpi"><b class="num" id="kKg">–</b><span>Ø Gewicht erwachsener Tiere</span></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <div class="ph"><h3>Fänge nach Ortsteil</h3><span class="note">Lage schematisch</span></div>
+        <svg class="mapsvg" id="map" viewBox="0 0 420 320" role="img" aria-label="Schematische Karte der Ortsteile von Waldsolms mit Anzahl der Fänge"></svg>
+        <p class="note">Kreisgröße entspricht der Zahl der Fänge. Ortsteil antippen zum Filtern.</p>
+      </div>
+      <div class="panel">
+        <div class="ph"><h3>Fänge pro Monat</h3></div>
+        <div class="legend">
+          <span><i style="background:var(--rude)"></i>Rüde</span>
+          <span><i style="background:var(--fahe)"></i>Fähe</span>
+          <span><i style="background:var(--jung)"></i>Jungtier</span>
+        </div>
+        <svg class="mapsvg" id="months" viewBox="0 0 420 220" role="img" aria-label="Balkendiagramm der Fänge pro Monat"></svg>
+        <div class="ph" style="margin-top:6px"><h3>Anlass des Fangs</h3></div>
+        <div class="bars" id="reasons"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="fangliste" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Fangliste</p><h2>Jeder Eintrag</h2></div>
+      <p id="listInfo">Spaltenkopf antippen zum Sortieren.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th data-k="d" aria-sort="descending">Datum</th>
+          <th data-k="ort">Ortsteil</th>
+          <th data-k="art">Tier</th>
+          <th data-k="grund">Anlass</th>
+          <th data-k="kg" class="kg">Gewicht</th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="privacy">Zum Schutz der betroffenen Haushalte veröffentlichen wir nur den Ortsteil, keine Straßen oder Hausnummern.</p>
+  </div>
+</section>
+
+<section id="praxis" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Aus der Praxis</p><h2>So sieht die Arbeit aus</h2></div>
+      <p>Lebendfalle, Kastenfalle, Waage: Bilder aus dem laufenden Einsatz. Mehr gibt es auf Instagram bei <a class="ig" href="https://www.instagram.com/waschbaerhilfe" target="_blank" rel="noopener">@waschbaerhilfe</a>.</p>
+    </div>
+    <div class="gallery">
+      <figure class="g-a"><button type="button"><img src="img/p10.webp" alt="Zwei Kastenfallen auf einer Gartenterrasse, im Hintergrund Gartenstuhl und Gewehr" loading="lazy"></button><figcaption>30.08. · Kastenfallen auf der Terrasse</figcaption></figure>
+      <figure class="g-b"><button type="button"><img src="img/p4.webp" alt="Hängewaage zeigt 7,42 kg" loading="lazy"></button><figcaption>19.09. · Rüde aus Hasselborn, 7,4 kg</figcaption></figure>
+      <figure class="g-c"><button type="button"><img src="img/p1.webp" alt="Gitter-Lebendfalle auf dem Rasen in einem Garten" loading="lazy"></button><figcaption>04.10. · Lebendfalle im Garten</figcaption></figure>
+      <figure class="g-d"><button type="button"><img src="img/p2.webp" alt="Kastenfalle an einem bewachsenen Gartenhang" loading="lazy"></button><figcaption>20.09. · Kastenfalle am Gartenhang</figcaption></figure>
+      <figure class="g-e"><button type="button"><img src="img/p5.webp" alt="Kastenfalle unter einem Obstbaum, am Stamm lehnt ein Gewehr" loading="lazy"></button><figcaption>17.09. · Einsatz unter dem Obstbaum</figcaption></figure>
+      <figure class="g-f"><button type="button"><img src="img/p11.webp" alt="Abgedeckter Fangkasten und Gewehr auf einer Wiese" loading="lazy"></button><figcaption>26.08. · Fangkasten auf der Wiese</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<dialog id="lightbox" aria-label="Bild vergrößert">
+  <img id="lbImg" alt="">
+  <p id="lbCap"></p>
+  <div class="lb-nav">
+    <button type="button" id="lbPrev" aria-label="Vorheriges Bild">←</button>
+    <button type="button" id="lbClose">Schließen</button>
+    <button type="button" id="lbNext" aria-label="Nächstes Bild">→</button>
+  </div>
+</dialog>
+
+<section id="vorbeugen" class="guide">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Vorbeugen</p><h2>So bleibt der Waschbär draußen</h2></div>
+      <p>Garten und Dachstuhl sind bei uns die häufigsten Anlässe. Beides lässt sich mit wenig Aufwand deutlich unattraktiver machen.</p>
+    </div>
+    <div class="tips">
+      <div class="tip">
+        <svg viewBox="0 0 52 52" aria-hidden="true"><rect x="1" y="1" width="50" height="50" rx="6" fill="var(--chip)"/><path d="M10 30 26 15l16 15" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/><path d="M16 27v13h20V27" fill="none" stroke="var(--ink)" stroke-width="3"/><path d="M38 18v20" stroke="var(--amber)" stroke-width="3"/><path d="M34 26h8" stroke="var(--amber)" stroke-width="4"/></svg>
+        <div><h3>Fallrohre und Dach sichern</h3><p>Waschbären klettern über Regenfallrohre und Äste aufs Dach. Glatte Blechmanschetten von etwa 60&nbsp;cm Höhe am Fallrohr stoppen sie. Äste mindestens einen Meter vom Dach zurückschneiden.</p></div>
+      </div>
+      <div class="tip">
+        <svg viewBox="0 0 52 52" aria-hidden="true"><rect x="1" y="1" width="50" height="50" rx="6" fill="var(--chip)"/><rect x="15" y="18" width="22" height="24" rx="2" fill="none" stroke="var(--ink)" stroke-width="3"/><path d="M12 18h28" stroke="var(--ink)" stroke-width="3"/><path d="M20 12h12" stroke="var(--amber)" stroke-width="4" stroke-linecap="round"/></svg>
+        <div><h3>Mülltonnen verschließen</h3><p>Deckel mit Spanngurt oder Tonnenschloss sichern. Biomüll und Essensreste nicht offen auf den Kompost geben.</p></div>
+      </div>
+      <div class="tip">
+        <svg viewBox="0 0 52 52" aria-hidden="true"><rect x="1" y="1" width="50" height="50" rx="6" fill="var(--chip)"/><path d="M12 40V22l14-9 14 9v18z" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/><path d="M22 40v-9h8v9" fill="none" stroke="var(--amber)" stroke-width="3"/></svg>
+        <div><h3>Geflügel nachts einsperren</h3><p>Ställe abends schließen. Waschbären öffnen einfache Riegel und Haken, daher Schraubverschlüsse oder Karabiner verwenden. Volieren auch unten mit festem Draht sichern.</p></div>
+      </div>
+      <div class="tip">
+        <svg viewBox="0 0 52 52" aria-hidden="true"><rect x="1" y="1" width="50" height="50" rx="6" fill="var(--chip)"/><circle cx="26" cy="27" r="11" fill="none" stroke="var(--ink)" stroke-width="3"/><path d="M15 38 37 16" stroke="var(--amber)" stroke-width="4" stroke-linecap="round"/></svg>
+        <div><h3>Nichts zum Fressen draußen lassen</h3><p>Kein Katzen- oder Hundefutter im Freien, Fallobst aufsammeln, Futterstellen für Vögel nachts abräumen. Niemals Waschbären füttern.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="check">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Selbsttest</p><h2>Dachstuhl-Check</h2></div>
+      <p>Haben Sie einen Untermieter? Kreuzen Sie an, was Sie bemerkt haben.</p>
+    </div>
+    <div class="check">
+      <div class="signs" id="signs"></div>
+      <div class="verdict" aria-live="polite">
+        <div class="meter" id="meter"></div>
+        <h3 id="vTitle">Noch nichts angekreuzt</h3>
+        <p id="vText">Gehen Sie die Liste durch. Die Einschätzung erscheint hier.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="steckbrief" class="guide">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Steckbrief</p><h2>Der Waschbär</h2></div>
+      <p>Procyon lotor stammt aus Nordamerika. In Hessen breitet er sich seit Jahrzehnten aus und hat bei uns kaum natürliche Feinde.</p>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>1934</b><p>Am Edersee in Nordhessen ausgesetzt. Von dort aus hat er sich über ganz Deutschland verbreitet.</p></div>
+      <div class="fact"><b class="num" id="fW">6,0 kg</b><p>Durchschnittsgewicht aller in Waldsolms gefangenen Rüden. Fähen sind etwas leichter.</p></div>
+      <div class="fact"><b>EU-Liste</b><p>Als invasive Art auf der Unionsliste geführt. Ziel ist, seine weitere Ausbreitung einzudämmen.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Waschbärmanagement Waldsolms · Datenstand <span id="stand">27.10.2026</span></span>
+    <span>Daten aus der Fallenjagd-Dokumentation · Fotos: <a href="https://www.instagram.com/waschbaerhilfe" target="_blank" rel="noopener" style="color:var(--band-ink)">@waschbaerhilfe</a></span>
+  </div>
+</footer>
+
+<script>
+/* ===== Datenquelle =====
+   Hier den Link aus Google Sheets eintragen:
+   Datei > Freigeben > Im Web veröffentlichen > Blatt "Öffentlich" > CSV
+   Ist das Feld leer oder nicht erreichbar, zeigt die Seite die eingebauten Daten unten. */
+const SHEET_CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQONlZwlO-hngivEZi15_XmFw80f6iTlPFWFnZfYx8YKjDWkrn-kLxdX8dtRtA271ZvpYj9_15lCNjv/pub?gid=112999061&single=true&output=csv";
+
+const FALLBACK=[
+["18.06.2026","Hasselborn","Waschbär","Rüde",5,"Garten"],
+["22.01.2026","Hasselborn","Waschbär","Fähe",7.3,"Dachstuhl"],
+["08.02.2026","Hasselborn","Waschbär","Rüde",6.2,"Geflügelriss"],
+["22.02.2026","Hasselborn","Waschbär","Fähe",6.8,"Geflügelriss"],
+["28.04.2026","Kraftsolms","Waschbär","Fähe",5.9,"Geflügelriss"],
+["02.05.2026","Hasselborn","Waschbär","Rüde",4.5,"Dachstuhl"],
+["12.05.2026","Hasselborn","Waschbär","Fähe",4.1,"Dachstuhl"],
+["27.05.2026","Brandoberndorf","Waschbär","Rüde",6.9,"Geflügelriss"],
+["30.05.2026","Hasselborn","Waschbär","Rüde",6,"Dachstuhl"],
+["12.06.2026","Hasselborn","Waschbär","Fähe",5.1,"Dachstuhl"],
+["30.06.2026","Hasselborn","Waschbär","Jungtier",1.7,"Garten"],
+["02.07.2026","Hasselborn","Waschbär","Rüde",5.3,"Garten"],
+["08.07.2026","Weiperfelden","Waschbär","Fähe",6.4,"Garten"],
+["09.07.2026","Kröffelbach","Waschbär","Rüde",7.9,"Mülltonnen"],
+["10.07.2026","Weiperfelden","Waschbär","Fähe",3.9,"Garten"],
+["25.08.2026","Weiperfelden","Waschbär","Jungtier",3.9,"Garten"],
+["25.08.2026","Weiperfelden","Waschbär","Jungtier",2.1,"Garten"],
+["26.08.2026","Hasselborn","Waschbär","Jungtier",2.1,"Garten"],
+["30.08.2026","Weiperfelden","Waschbär","Jungtier",1.4,"Garten"],
+["07.09.2026","Hasselborn","Waschbär","Jungtier",2.4,"Dachstuhl"],
+["11.09.2026","Hasselborn","Waschbär","Rüde",8.3,"Dachstuhl"],
+["17.09.2026","Kraftsolms","Rotfuchs","Rüde",5.1,"Geflügelriss"],
+["19.09.2026","Hasselborn","Waschbär","Rüde",7.4,"Dachstuhl"],
+["20.09.2026","Hasselborn","Waschbär","Jungtier",2.5,"Dachstuhl"],
+["21.09.2026","Hasselborn","Waschbär","Jungtier",2.5,"Dachstuhl"],
+["27.10.2026","Hasselborn","Waschbär","Rüde",2.9,"Garten"]
+];
+
+function parseDate(ds){ds=String(ds).trim();const iso=ds.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);if(iso)return new Date(+iso[1],+iso[2]-1,+iso[3]);const m=ds.match(/^(\d{1,2})[./](\d{1,2})[./](\d{2,4})/);if(!m)return null;
+ let y=+m[3];if(y<100)y+=2000;return new Date(y,+m[2]-1,+m[1])}
+function rec(ds,ort,tier,art,kg,grund){const d=parseDate(ds);if(!d)return null;
+ const p=n=>String(n).padStart(2,"0");
+ return{jahr:d.getFullYear(),ds:`${p(d.getDate())}.${p(d.getMonth()+1)}.${d.getFullYear()}`,d,m:d.getMonth(),y:d.getFullYear(),
+  ort:String(ort||"Unbekannt").trim(),tier:String(tier||"Waschbär").trim(),art:String(art||"").trim(),
+  kg:parseFloat(String(kg).replace(",","."))||0,grund:String(grund||"Sonstiges").trim()}}
+function parseCSV(t){const rows=[];let row=[],f="",q=false;
+ for(let i=0;i<t.length;i++){const c=t[i];
+  if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+  else if(c==='"')q=true;else if(c===","){row.push(f);f=""}
+  else if(c==="\n"||c==="\r"){if(c==="\r"&&t[i+1]==="\n")i++;row.push(f);rows.push(row);row=[];f=""}
+  else f+=c}
+ if(f||row.length){row.push(f);rows.push(row)}return rows.filter(r=>r.some(x=>x.trim()))}
+function fromCSV(text){const rows=parseCSV(text);const h=rows[0].map(x=>x.trim().toLowerCase());
+ const col=(...names)=>h.findIndex(x=>names.includes(x));
+ const c={d:col("datum"),o:col("ort","ortsteil"),t:col("tierart"),a:col("art","wildstatus"),k:col("gewicht","kg"),g:col("grund","anlass")};
+ if(c.d<0)throw new Error("Spalte Datum fehlt");
+ return rows.slice(1).map(r=>rec(r[c.d],r[c.o],r[c.t],r[c.a],r[c.k],r[c.g])).filter(Boolean)}
+let DATA=FALLBACK.map(r=>rec(...r)).filter(Boolean);
+const MONTHS=["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+const PLACES={ // schematische Lage
+ "Brandoberndorf":[92,120],"Griedelbach":[88,232],"Kraftsolms":[215,78],
+ "Kröffelbach":[330,62],"Weiperfelden":[318,180],"Hasselborn":[205,250]};
+const ART_COL={"Rüde":"var(--rude)","Fähe":"var(--fahe)","Jungtier":"var(--jung)"};
+const artCol=a=>ART_COL[a]||"var(--muted)";
+let REASONS=[];
+const st={jahr:null,tier:null,art:null,ort:null,monat:null,grund:null,sort:"d",dir:-1};
+const fmt=n=>n.toLocaleString("de-DE",{minimumFractionDigits:1,maximumFractionDigits:1});
+const $=id=>document.getElementById(id);
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent&&parent.appendChild(e);return e}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function filtered(skip){return DATA.filter(r=>
+ (skip==="jahr"||!st.jahr||r.y===st.jahr)&&(skip==="tier"||!st.tier||r.tier===st.tier)&&(skip==="art"||!st.art||r.art===st.art)&&
+ (skip==="ort"||!st.ort||r.ort===st.ort)&&(skip==="monat"||st.monat===null||r.m===st.monat)&&
+ (skip==="grund"||!st.grund||r.grund===st.grund))}
+function toggle(key,val){st[key]=st[key]===val?null:val;render()}
+
+function chips(container,key,values,colorMap){
+ const base=filtered(key);$(container).innerHTML="";
+ values.forEach(v=>{const b=document.createElement("button");b.className="chip";b.type="button";
+  b.setAttribute("aria-pressed",st[key]===v);const c=base.filter(r=>r[key]===v).length;
+  b.innerHTML=(colorMap?`<i class="dot" style="background:${colorMap[v]||'var(--muted)'}"></i>`:"")+esc(v)+` <span class="c num">${c}</span>`;
+  b.onclick=()=>toggle(key,v);$(container).appendChild(b)})}
+
+function renderMap(){
+ const svg=$("map");svg.innerHTML="";const rows=filtered("ort");
+ // Waldkulisse
+ [[60,60,150,70],[260,40,140,60],[110,260,170,50],[330,250,110,60],[40,200,90,70]].forEach(([x,y,w,h])=>
+  el("ellipse",{cx:x,cy:y,rx:w/2,ry:h/2,fill:"var(--moss)",opacity:.08},svg));
+ const roads=[[92,120,215,78],[215,78,330,62],[215,78,205,250],[205,250,318,180],[92,120,88,232],[88,232,205,250],[318,180,330,62]];
+ roads.forEach(([a,b,c,d])=>el("line",{x1:a,y1:b,x2:c,y2:d,stroke:"var(--line)","stroke-width":2,"stroke-dasharray":"4 5"},svg));
+ const max=Math.max(1,...Object.keys(PLACES).map(p=>rows.filter(r=>r.ort===p).length));
+ Object.entries(PLACES).forEach(([name,[x,y]])=>{
+  const n=rows.filter(r=>r.ort===name).length;const on=st.ort===name;
+  const g=el("g",{class:"place",tabindex:0,role:"button","aria-label":`${name}: ${n} Fänge`,"aria-pressed":on},svg);
+  const r=n?10+30*Math.sqrt(n/max):5;
+  el("circle",{class:"halo",cx:x,cy:y,r:r+8,fill:"var(--amber)",opacity:on?.4:0},g);
+  el("circle",{cx:x,cy:y,r,fill:n?"var(--band)":"var(--line)",opacity:st.ort&&!on?.35:1},g);
+  if(n){const t=el("text",{x,y:y+6,"text-anchor":"middle","font-size":Math.max(14,r*.7),"font-weight":700,fill:"var(--band-ink)"},g);t.textContent=n}
+  const ly=y+r+16;const lab=el("text",{x,y:ly,"text-anchor":"middle","font-size":13,fill:on?"var(--ink)":"var(--muted)","font-weight":on?700:400},g);lab.textContent=name;
+  g.onclick=()=>toggle("ort",name);g.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle("ort",name)}};
+ });
+}
+
+function renderMonths(){
+ const svg=$("months");svg.innerHTML="";const rows=filtered("monat");
+ const W=420,H=220,L=28,B=26,T=10,n=12,bw=(W-L-8)/n;
+ const counts=[...Array(n)].map((_,m)=>({m,R:0,F:0,J:0}));
+ rows.forEach(r=>{const k={"Rüde":"R","Fähe":"F","Jungtier":"J"}[r.art];if(k)counts[r.m][k]++});
+ const max=Math.max(4,...counts.map(c=>c.R+c.F+c.J));const top=Math.ceil(max/2)*2;
+ const y=v=>H-B-(H-B-T)*v/top;
+ for(let v=0;v<=top;v+=2){el("line",{x1:L,x2:W-4,y1:y(v),y2:y(v),stroke:"var(--line)","stroke-width":1},svg);
+  const t=el("text",{x:L-8,y:y(v)+4,"text-anchor":"end","font-size":11,fill:"var(--muted)"},svg);t.textContent=v}
+ counts.forEach((c,i)=>{const x=L+i*bw+bw*.18,w=bw*.64;let acc=0;const on=st.monat===i;
+  const g=el("g",{class:"place",tabindex:0,role:"button","aria-label":`${MONTHS[i]}: ${c.R+c.F+c.J} Fänge`,"aria-pressed":on},svg);
+  el("rect",{x:L+i*bw,y:T,width:bw,height:H-B-T,fill:"var(--amber)",opacity:on?.18:0},g);
+  [["R","Rüde"],["F","Fähe"],["J","Jungtier"]].forEach(([k,a])=>{if(!c[k])return;
+   el("rect",{x,y:y(acc+c[k]),width:w,height:y(acc)-y(acc+c[k])-1,fill:ART_COL[a],opacity:st.monat!==null&&!on?.35:1},g);acc+=c[k]});
+  const t=el("text",{x:x+w/2,y:H-8,"text-anchor":"middle","font-size":11,fill:on?"var(--ink)":"var(--muted)","font-weight":on?700:400},g);t.textContent=MONTHS[i];
+  g.onclick=()=>toggle("monat",i);g.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle("monat",i)}};
+ });
+}
+
+function renderReasons(){
+ const rows=filtered("grund");const box=$("reasons");box.innerHTML="";
+ const max=Math.max(1,...REASONS.map(g=>rows.filter(r=>r.grund===g).length));
+ REASONS.forEach(g=>{const n=rows.filter(r=>r.grund===g).length;const b=document.createElement("button");
+  b.className="bar";b.type="button";b.setAttribute("aria-pressed",st.grund===g);
+  b.innerHTML=`<span>${esc(g)}</span><span class="track"><span class="fill" style="display:block;width:${n/max*100}%"></span></span><span class="v num">${n}</span>`;
+  b.onclick=()=>toggle("grund",g);box.appendChild(b)})}
+
+function renderKpis(rows){
+ $("kTotal").textContent=rows.length;
+ $("kJung").textContent=rows.filter(r=>r.art==="Jungtier").length;
+ const byOrt={};rows.forEach(r=>byOrt[r.ort]=(byOrt[r.ort]||0)+1);
+ const best=Object.entries(byOrt).sort((a,b)=>b[1]-a[1])[0];
+ $("kHot").textContent=best?best[1]:"0";
+ $("kHotL").textContent=!best?"Keine Fänge":st.ort?`Fänge in ${best[0]}`:`in ${best[0]}, dem Schwerpunkt`;
+ const ad=rows.filter(r=>r.art!=="Jungtier");
+ $("kKg").textContent=ad.length?fmt(ad.reduce((s,r)=>s+r.kg,0)/ad.length)+" kg":"–";
+}
+
+function renderTable(rows){
+ const s=st.sort,dir=st.dir;
+ const sorted=[...rows].sort((a,b)=>{const va=a[s],vb=b[s];return (va>vb?1:va<vb?-1:0)*dir});
+ $("rows").innerHTML=sorted.map(r=>`<tr><td class="num">${r.ds}</td><td>${esc(r.ort)}</td>
+  <td><span class="tag"><i style="background:${artCol(r.art)}"></i>${esc(r.art)}</span>${r.tier!=="Waschbär"?`<span class="fox">${esc(r.tier)}</span>`:""}</td>
+  <td>${esc(r.grund)}</td><td class="kg">${fmt(r.kg)} kg</td></tr>`).join("")||`<tr><td colspan="5">Keine Einträge für diese Auswahl.</td></tr>`;
+ document.querySelectorAll("th[data-k]").forEach(th=>th.setAttribute("aria-sort",th.dataset.k===s?(dir>0?"ascending":"descending"):"none"));
+ $("listInfo").textContent=`${rows.length} von ${DATA.filter(r=>!st.jahr||r.y===st.jahr).length} Einträgen. Spaltenkopf antippen zum Sortieren.`;
+}
+
+function renderState(rows){
+ const parts=[];if(st.jahr&&YEARS.length>1)parts.push(st.jahr);if(st.tier)parts.push(st.tier);if(st.art)parts.push(st.art);if(st.ort)parts.push(st.ort);
+ if(st.monat!==null)parts.push(MONTHS[st.monat]);if(st.grund)parts.push(st.grund);
+ $("fText").textContent=parts.length?`${rows.length} Einträge · ${parts.join(" · ")}`:`Alle ${rows.length} Einträge`;
+ $("reset").disabled=!(st.tier||st.art||st.ort||st.grund||st.monat!==null);
+}
+
+function render(){
+ const rows=filtered();
+ $("rowJahr").hidden=YEARS.length<2;
+ chips("fJahr","jahr",YEARS);
+ chips("fTier","tier",uniq("tier",["Waschbär"]));
+ chips("fArt","art",uniq("art",["Rüde","Fähe","Jungtier"]),ART_COL);
+ renderKpis(rows);renderMap();renderMonths();renderReasons();renderTable(rows);renderState(rows);
+}
+$("reset").onclick=()=>{st.jahr=YEARS[YEARS.length-1]||null;st.tier=st.art=st.ort=st.grund=null;st.monat=null;render()};
+document.querySelectorAll("th[data-k]").forEach(th=>th.onclick=()=>{const k=th.dataset.k;
+ if(st.sort===k)st.dir*=-1;else{st.sort=k;st.dir=k==="d"||k==="kg"?-1:1}render()});
+
+// Kopf und abgeleitete Werte
+let YEARS=[];
+function uniq(key,first){const seen=[...new Set(DATA.map(r=>r[key]).filter(Boolean))];return [...first.filter(v=>seen.includes(v)),...seen.filter(v=>!first.includes(v)).sort()]}
+function setup(){
+ YEARS=[...new Set(DATA.map(r=>r.y))].sort();
+ if(!YEARS.includes(st.jahr))st.jahr=YEARS[YEARS.length-1]||null;
+ REASONS=uniq("grund",["Garten","Dachstuhl","Geflügelriss","Mülltonnen"]).filter(g=>DATA.some(r=>r.grund===g));
+ if(!DATA.length)return;
+ const last=DATA.reduce((a,b)=>a.d>b.d?a:b);const yr=DATA.filter(r=>r.y===last.y);
+ $("heroCount").textContent=yr.length;$("heroCap").textContent=`Fänge in ${last.y}`;
+ const wb=yr.filter(r=>r.tier==="Waschbär").length,other=yr.length-wb;
+ $("heroSub").textContent=`Letzter Eintrag: ${last.ds} · ${wb} ${wb===1?"Waschbär":"Waschbären"}`+(other?`, ${other} andere`:"");
+ $("marks").innerHTML="<i></i>".repeat(Math.min(yr.length,60));$("stand").textContent=last.ds;
+ $("evalEyebrow").textContent=YEARS.length>1?`Auswertung ${YEARS[0]}–${YEARS[YEARS.length-1]}`:`Auswertung ${last.y}`;
+ const rude=DATA.filter(r=>r.tier==="Waschbär"&&r.art==="Rüde");
+ if(rude.length)$("fW").textContent=fmt(rude.reduce((s,r)=>s+r.kg,0)/rude.length)+" kg";
+}
+function setLive(ok,text){$("live").classList.toggle("ok",ok);$("live").querySelector("span").textContent=text}
+
+// Dachstuhl-Check
+const SIGNS=[
+ ["Poltern, Kratzen oder Fauchen im Dach, vor allem nachts",2],
+ ["Kotansammlung an einer festen Stelle (Latrine) auf dem Dachboden oder in der Dachrinne",2],
+ ["Herausgerissene Dämmwolle oder verschobene Dachziegel",2],
+ ["Kratzspuren oder Schmutz am Regenfallrohr",1],
+ ["Umgeworfene oder geöffnete Mülltonnen",1],
+ ["Pfotenabdrücke mit fünf langen Fingern, ähnlich einer Kinderhand",1]];
+$("signs").innerHTML=SIGNS.map(([t],i)=>`<label class="sign" for="s${i}"><input type="checkbox" id="s${i}"><span>${t}</span></label>`).join("");
+$("meter").innerHTML="<i></i>".repeat(6);
+function verdict(){let sc=0,n=0;SIGNS.forEach(([,w],i)=>{if($("s"+i).checked){sc+=w;n++}});
+ document.querySelectorAll("#meter i").forEach((m,i)=>m.classList.toggle("on",i<Math.min(6,Math.round(sc*6/9))));
+ const [t,x]=n===0?["Noch nichts angekreuzt","Gehen Sie die Liste durch. Die Einschätzung erscheint hier."]:
+  sc<=2?["Eher Besuch als Untermieter","Ein Waschbär streift vermutlich durchs Grundstück. Sichern Sie jetzt Mülltonnen und Fallrohre, dann zieht er weiter."]:
+  sc<=4?["Verdacht auf Einzug","Mehrere Anzeichen deuten auf einen Unterschlupf hin. Prüfen Sie bei Tageslicht Dachboden und Einstiegsstellen und wenden Sie sich an den Jagdausübungsberechtigten."]:
+  ["Sehr wahrscheinlich bewohnt","Das spricht für einen festen Unterschlupf, im Frühjahr oft mit Jungtieren. Verschließen Sie Öffnungen erst, wenn sicher kein Tier mehr drin ist, und holen Sie fachliche Hilfe."];
+ $("vTitle").textContent=t;$("vText").textContent=x}
+$("signs").addEventListener("change",verdict);
+
+// Galerie-Lightbox
+const figs=[...document.querySelectorAll(".gallery figure")];let cur=0;const lb=$("lightbox");
+function show(i){cur=(i+figs.length)%figs.length;const im=figs[cur].querySelector("img");
+ $("lbImg").src=im.src;$("lbImg").alt=im.alt;$("lbCap").textContent=figs[cur].querySelector("figcaption").textContent}
+figs.forEach((f,i)=>f.querySelector("button").onclick=()=>{show(i);try{lb.showModal()}catch(e){lb.setAttribute("open","")}});
+$("lbPrev").onclick=()=>show(cur-1);$("lbNext").onclick=()=>show(cur+1);$("lbClose").onclick=()=>lb.close();
+lb.addEventListener("click",e=>{if(e.target===lb)lb.close()});
+lb.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")show(cur-1);if(e.key==="ArrowRight")show(cur+1)});
+
+setup();render();
+if(SHEET_CSV_URL){
+ fetch(SHEET_CSV_URL+(SHEET_CSV_URL.includes("?")?"&":"?")+"t="+Date.now(),{cache:"no-store"})
+  .then(r=>{if(!r.ok)throw new Error(r.status);return r.text()})
+  .then(t=>{const d=fromCSV(t);if(!d.length)throw new Error("leer");DATA=d;st.jahr=null;setup();render();
+   setLive(true,"Live aus der Fangliste · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})+" Uhr")})
+  .catch(e=>{console.warn("Sheet nicht erreichbar:",e);setLive(false,"Gespeicherter Stand")});
+}else setLive(false,"Gespeicherter Stand");
+</script>
+</body>
+</html>
