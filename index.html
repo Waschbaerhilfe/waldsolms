@@ -60,9 +60,10 @@ button{font:inherit;color:inherit}
 .tally .big{font-family:var(--display);font-weight:800;font-size:clamp(88px,14vw,160px);line-height:.85;color:var(--amber)}
 .tally .cap{font-family:var(--display);font-size:24px;font-weight:600;text-transform:uppercase}
 .tally .sub{color:var(--band-muted);font-size:15px}
-.marks{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
-.marks i{display:block;width:4px;height:22px;background:var(--band-muted);opacity:.55;border-radius:1px}
-.marks i:nth-child(5n){transform:rotate(-55deg) translateY(-2px);margin-left:-12px;margin-right:6px;width:3px;opacity:.9;background:var(--amber)}
+.marks{display:flex;flex-wrap:wrap;gap:10px 12px;margin-top:16px;max-width:300px}
+.marks svg{width:34px;height:28px;display:block;overflow:visible}
+.marks .bar{stroke:var(--band-muted);stroke-width:2.6;stroke-linecap:round}
+.marks .slash{stroke:var(--amber);stroke-width:2.6;stroke-linecap:round}
 nav.jump{border-top:1px solid color-mix(in srgb,var(--band-ink) 14%,transparent)}
 nav.jump .wrap{display:flex;gap:22px;flex-wrap:wrap;padding-block:14px}
 nav.jump a{color:var(--band-ink);text-decoration:none;font-family:var(--display);font-weight:600;font-size:17px;text-transform:uppercase;letter-spacing:.06em;opacity:.8}
@@ -189,7 +190,7 @@ a.ccard:hover{border-color:var(--moss)}
 .ccard.primary{background:var(--band);color:var(--band-ink);border-color:var(--band)}
 .ccard.primary span{color:var(--band-muted)}
 .ccard.primary .ic{background:var(--amber);color:var(--band)}
-.copy{margin-top:6px;border:1px solid var(--line);background:transparent;border-radius:4px;padding:3px 10px;font-size:13px;cursor:pointer}
+.copy{margin-top:6px;border:1px solid color-mix(in srgb,currentColor 35%,transparent);background:transparent;color:inherit;border-radius:4px;padding:3px 10px;font-size:13px;cursor:pointer}
 .ccard.mail{grid-template-columns:44px 1fr}
 
 /* Tagebuch */
@@ -467,7 +468,7 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
         </ol>
         <div class="join-cta">
           <a class="btn solid" href="mailto:waschbaerwaldsolms@gmail.com?subject=Ich%20m%C3%B6chte%20beim%20Waschb%C3%A4rmanagement%20mitmachen">Ich will mitmachen</a>
-          <a class="btn line" href="https://chat.whatsapp.com/HFsF7XCO7ZSJV2ogS8zdTi" target="_blank" rel="noopener">Erst mal in die WhatsApp-Gruppe</a>
+          <a class="btn line" href="https://www.facebook.com/groups/2588753514874169/" target="_blank" rel="noopener">Erst mal in die Facebook-Gruppe</a>
         </div>
       </div>
       <aside class="course" aria-label="Fangjagd-Lehrgang">
@@ -494,24 +495,18 @@ footer .wrap{padding-block:28px;display:flex;justify-content:space-between;gap:1
   <div class="wrap">
     <div class="sec-head">
       <div><p class="eyebrow">Kontakt</p><h2>Waschbär im Haus?</h2></div>
-      <p>Melden Sie sich, wenn Sie Waschbären auf dem Grundstück oder im Dach haben, oder wenn Ihnen tagaktive, geschwächte oder auffällig zutrauliche Wildtiere begegnen. In der WhatsApp-Gruppe erfahren Sie außerdem von neuen Fängen und Tipps.</p>
+      <p>Melden Sie sich, wenn Sie Waschbären auf dem Grundstück oder im Dach haben, oder wenn Ihnen tagaktive, geschwächte oder auffällig zutrauliche Wildtiere begegnen. Neue Fänge und Tipps finden Sie in unserer Facebook-Gruppe und auf Instagram.</p>
     </div>
     <div class="contact">
-      <a class="ccard primary" href="https://chat.whatsapp.com/HFsF7XCO7ZSJV2ogS8zdTi" target="_blank" rel="noopener">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg></span>
-        <div><b>WhatsApp-Gruppe</b><span>Beitreten und mitreden</span></div></a>
-      <div class="ccard mail">
+      <div class="ccard mail primary">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
-        <div><b>E-Mail</b><a id="mailAddr" href="mailto:waschbaerwaldsolms@gmail.com" style="color:var(--muted);font-size:14px;overflow-wrap:anywhere">waschbaerwaldsolms@gmail.com</a><br><button class="copy" type="button" id="copyMail">Adresse kopieren</button></div></div>
+        <div><b>E-Mail</b><a id="mailAddr" href="mailto:waschbaerwaldsolms@gmail.com" style="color:inherit;font-size:14px;overflow-wrap:anywhere">waschbaerwaldsolms@gmail.com</a><br><button class="copy" type="button" id="copyMail">Adresse kopieren</button></div></div>
       <a class="ccard" href="https://www.facebook.com/groups/2588753514874169/" target="_blank" rel="noopener">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c2.8.3 5 2.5 5 5.8"/></svg></span>
         <div><b>Facebook-Gruppe</b><span>Sichtungen, Praxis und Tipps für Jäger, Landwirte und Anwohner</span></div></a>
       <a class="ccard" href="https://www.instagram.com/waschbaerhilfe" target="_blank" rel="noopener">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></span>
         <div><b>Instagram</b><span>@waschbaerhilfe</span></div></a>
-      <a class="ccard" href="https://www.google.com/maps/d/edit?mid=1NtLJXHzdBJtydBblQm5ed-rzRgFyjOA&amp;usp=sharing" target="_blank" rel="noopener">
-        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg></span>
-        <div><b>Google-Karte</b><span>Unsere Übersichtskarte</span></div></a>
     </div>
   </div>
 </section>
@@ -708,12 +703,16 @@ function setup(){
  $("heroCount").textContent=yr.length;$("heroCap").textContent=`Fänge in ${last.y}`;
  const wb=yr.filter(r=>r.tier==="Waschbär").length,other=yr.length-wb;
  $("heroSub").textContent=`Letzter Eintrag: ${last.ds} · ${wb} ${wb===1?"Waschbär":"Waschbären"}`+(other?`, ${other} andere`:"");
- $("marks").innerHTML="<i></i>".repeat(Math.min(yr.length,60));$("stand").textContent=last.ds;
+ $("marks").innerHTML=tally(Math.min(yr.length,100));$("stand").textContent=last.ds;
  $("evalEyebrow").textContent=YEARS.length>1?`Auswertung ${YEARS[0]}–${YEARS[YEARS.length-1]}`:`Auswertung ${last.y}`;
  const rude=DATA.filter(r=>r.tier==="Waschbär"&&r.art==="Rüde");
  if(rude.length)$("fW").textContent=fmt(rude.reduce((s,r)=>s+r.kg,0)/rude.length)+" kg";
 }
 function setLiveCount(){const y=DATA.length?DATA.reduce((a,b)=>a.d>b.d?a:b).y:null;$("joinCount").textContent=DATA.filter(r=>r.y===y).length}
+function tally(n){let h="";for(let g=0;g<n;g+=5){const k=Math.min(5,n-g);let b="";
+  for(let i=0;i<Math.min(k,4);i++){const x=5+i*8;b+=`<line class="bar" x1="${x}" y1="3" x2="${x}" y2="25"/>`}
+  if(k===5)b+=`<line class="slash" x1="0" y1="21" x2="34" y2="7"/>`;
+  h+=`<svg viewBox="0 0 34 28" aria-hidden="true">${b}</svg>`}return h}
 function setLive(ok,text){$("live").classList.toggle("ok",ok);$("live").querySelector("span").textContent=text}
 
 // Dachstuhl-Check
